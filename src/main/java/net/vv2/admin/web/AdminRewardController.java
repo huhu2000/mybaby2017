@@ -1,0 +1,195 @@
+package net.vv2.admin.web;
+
+import com.xiaoleilu.hutool.date.DateUtil;
+
+import net.vv2.Utils.PageHelp;
+import net.vv2.baby.domain.Baby;
+import net.vv2.baby.service.impl.BabyServiceImpl;
+import net.vv2.baby.service.impl.RewardServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+@Controller
+@RequestMapping("/admin/reward")
+public class AdminRewardController {
+    @Autowired
+    private RewardServiceImpl rewardService;
+
+    @Autowired
+    private BabyServiceImpl babyService;
+
+
+    @ResponseBody
+    @RequestMapping(value = "/changeRewardType", method = RequestMethod.POST)
+    public List<HashMap<String, Object>> changeRewardType(@RequestBody Map param) {
+        List<HashMap<String, Object>> result = new ArrayList<>();
+                if(!StringUtils.isEmpty((String)param.get("babyId"))
+                        && !StringUtils.isEmpty((String)param.get("rewardTime")) ) {
+
+
+                    // 将获取的json数据封装一层，然后在给返回
+                    Map<String, Object> tmp = new HashMap<>();
+                    tmp.put("baby_id",param.get("babyId"));
+                    tmp.put("reward_time",((String)param.get("rewardTime")).replaceAll("-",""));
+                    result  = rewardService.selectRewardTypeList(tmp);
+
+                }
+
+        return result;
+    }
+
+    @RequestMapping("/rewardList")
+    public String rewardList( @RequestParam(defaultValue = "1") int pageNum,
+                              @RequestParam(defaultValue = "6") int rows,
+                              @RequestParam(defaultValue = "") String startDate,
+                              @RequestParam(defaultValue = "") String endDate,
+                              Model model){
+
+        if(StringUtils.isEmpty(startDate))
+        {
+            startDate = DateUtil.format(DateUtil.date(),"yyyy-MM-dd");
+
+        }
+
+        if(StringUtils.isEmpty(endDate))
+        {
+            endDate =  DateUtil.format(DateUtil.date(),"yyyy-MM-dd");
+        }
+
+        PageHelp pageHelp = new PageHelp(rewardService.selectAllRewardCount(),pageNum,rows);
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("startDate",startDate);
+        param.put("endDate",endDate);
+
+        List<HashMap<String,Object>> list = rewardService.selectAllReward(startDate,endDate,(pageNum-1)*rows,rows);
+        model.addAttribute("rewardList",list);
+        model.addAttribute("totalPage",pageHelp.getPageArray()[0]);
+        model.addAttribute("pageNum",pageNum);
+        model.addAttribute("inData",param);
+
+        return "/admin/reward/rewardList";
+
+    }
+
+
+
+    @RequestMapping("/writeoffRewardView")
+    public String writeoffRewardView(
+            Model model){
+
+        Map<String,Object> param = new HashMap<>();
+        List<HashMap<String,Object>> list = rewardService.selectRewardCountByUser(param);
+        model.addAttribute("rewardCountList",list);
+        return "/admin/reward/writeoffReward";
+
+    }
+
+    @RequestMapping("/writeoffReward")
+    public ModelAndView writeoffReward(
+            @RequestParam(defaultValue = "0") String score,
+            @RequestParam(defaultValue = "") String babyId,
+            ModelAndView mv){
+
+        Map<String,Object> param = new HashMap<>();
+        param.put("baby_id",babyId);
+        param.put("write_off","0");
+        param.put("num",score);
+        List<HashMap<String,Object>> rewardList = rewardService.selectRewardByNum(param);
+        if(rewardList !=null && rewardList.size() >0)
+        {
+            for (HashMap<String,Object> reward :rewardList  )
+            {
+                reward.put("write_off","1");
+                rewardService.updateReward(reward);
+            }
+        }
+
+        return returnMv(true,mv,"/admin/reward/writeoffRewardView");
+
+    }
+
+
+
+    @RequestMapping("/addReward")
+    public String addReward(Model model){
+
+        List<Baby> babyList = babyService.selectAllBaby();
+        model.addAttribute("babyList",babyList);
+
+     /*   List<HashMap<String,Object>>  rewardTypeList = rewardService.selectRewardTypeList();
+        model.addAttribute("rewardTypeList",rewardTypeList);*/
+
+        return "/admin/reward/addReward";
+    }
+
+
+    @RequestMapping("/saveReward")
+    public String saveReward(String babyId,
+                                   String typeId,
+                                   String rewardTime,
+                                   Model model){
+        HashMap<String,Object> rewardParam = new HashMap<String,Object> ();
+        rewardParam.put("baby_id",babyId);
+        rewardParam.put("type",typeId);
+        rewardParam.put("reward_time",DateUtil.format(DateUtil.parse(rewardTime), "yyyyMMdd"));
+        rewardService.addReward(rewardParam);
+
+        //return returnMv((rewardService.addReward(rewardParam)>0),mv,"/admin/reward/addReward");
+        List<Baby> babyList = babyService.selectAllBaby();
+        model.addAttribute("babyList",babyList);
+
+        model.addAttribute("reward",rewardParam);
+        return "/admin/reward/addReward";
+    }
+
+
+    @RequestMapping("/delReward/{id}")
+    public ModelAndView delReward(@PathVariable Integer id,
+                                ModelAndView mv){
+
+        return returnMv((rewardService.delReward(id)>0),mv,"/admin/reward/rewardList");
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 选择页面跳转
+     * @param bl
+     * @param mv
+     * @return
+     */
+    public ModelAndView returnMv(boolean bl, ModelAndView mv,String url) {
+        if (bl) {
+            return updateDate(mv, "操作成功！", "<meta http-equiv=\"refresh\" content=\"2;url=" + url + "\">", "/success");
+        } else {
+            return updateDate(mv, "操作失败！", "<meta http-equiv=\"refresh\" content=\"2;url=" +  url + "\">", "/err");
+        }
+
+    }
+
+    /**
+     * 页面跳转
+     * @param mv
+     * @param msg
+     * @param url
+     * @param viewName
+     * @return
+     */
+    public ModelAndView updateDate(ModelAndView mv, String msg, String url, String viewName) {
+        mv.addObject("msg", msg);
+        mv.addObject("url", url);
+        mv.setViewName(viewName);
+        return mv;
+    }
+}

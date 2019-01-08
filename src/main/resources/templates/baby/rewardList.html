@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="layout/layout :: htmlhead(title='宝贝的第一次')"></head>
+<body class="am-with-topbar-fixed-top am-scrollable-vertical">
+
+<div th:replace="layout/layout :: header"></div>
+
+
+<div class="theday am-g am-g-fixed">
+
+    <div class="mysearch am-container">
+
+            <form class="am-form am-form-horizontal " th:action="@{/reward/rewardList}">
+                <div class="am-input-group am-input-group-primary am-input-group-success form-group">
+                    <label  class="col-sm-4 control-label">开始时间:</label>
+                    <span class="col-sm-7">
+                     <input  type="date" name="startDate" min="1970-01-01" th:value="${inData.startDate}" max="2050-12-31" placeholder="开始时间" />到
+                     <input  type="date" name="endDate" min="1970-01-01" th:value="${inData.endDate}" max="2050-12-31" placeholder="结束时间" />
+                    </span>
+
+                    <span class="am-input-group-btn">
+                        <button class="am-btn am-btn-success" type="submit">
+                            <span class="am-icon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+
+    </div>
+
+
+    <div class="am-panel am-panel-default">
+        <div class="am-panel-hd">奖励>></div>
+        <div class="am-panel-bd">
+
+            <!--  am-icon-female 妈妈图标   am-icon-thumbs-o-up  am-icon-bicycle-->
+
+            <ul class="am-list am-list-static am-list-border am-list-striped am-animation-fade" th:each="reward:${list}">
+                <li><i class="am-icon-male am-icon-fw"></i>
+                    <span th:text="${reward.month}"></span> 月&nbsp;&nbsp;<span th:text="${reward.name}"></span>&nbsp;小朋友，获得
+
+
+                       <img width="25" height="20" th:src="@{/image/flower.gif}" />
+
+                       X <span  style="color:red;" th:text="${reward.ct}"></span>
+                         <ul >
+                             <li>
+                                 睡觉奖励：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct0}">
+                             </li>
+                             <li>
+                                 吃饭：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct1}">
+                             </li>
+                             <li>
+                                 学习：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct2}">
+                             </li>
+                             <li>
+                                 起床：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct3}">
+                             </li>
+                             <li>
+                                 友爱：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct4}">
+                             </li>
+                             <li>
+                                 懂礼貌：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct5}">
+                             </li>
+                             <li>
+                                 不哭闹：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct6}">
+                             </li>
+                     </ul>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+
+<div th:replace="layout/layout :: footer"></div>
+
+
+</body>
+</html>

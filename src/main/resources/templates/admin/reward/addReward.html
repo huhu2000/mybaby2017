@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="layout/adminLayout :: htmlhead(title='增加奖励')"></head>
+<body class="am-with-topbar-fixed-top am-scrollable-vertical">
+
+<div th:replace="layout/adminLayout :: header"></div>
+
+<script>
+    function changeRewardType()
+    {
+        //初始化
+        $("#typeId").empty();
+        $("#typeId").append("<option value=''>--选择--</option>");
+
+        var babyId = $("#babyId").val();
+
+        if(babyId == "--选择--")
+        {
+
+            babyId = "";
+            return;
+        }
+
+        var json = {
+            "babyId": babyId,
+            "rewardTime": $("#rewardTime").val()
+        };
+
+        $.ajax({
+            url: '/admin/reward/changeRewardType',
+            contentType: "application/json;charset=UTF-8",
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(json),
+            timeout: 3000,
+            cache: false,
+            beforeSend: LoadFunction, //加载执行方法
+            error: erryFunction,  //错误执行方法
+            success: succFunction //成功执行方法
+        });
+
+        function LoadFunction() {
+
+        }
+        function erryFunction() {
+            alert("error");
+        }
+        function succFunction(tt) {
+
+
+            var json = eval(tt); //数组
+
+            $.each(json, function (index) {
+                //循环获取数据
+                var typeId = json[index].type_id;
+                var typeName = json[index].type_name;
+
+                $("#typeId").append("<option value='" + typeId + "'>" + typeName + "</option>");
+            });
+        }
+    }
+
+
+    $(document).ready(function() {
+        $("#babyId").change(function () {
+
+            changeRewardType();
+        });
+
+        $("#rewardTime").change(function () {
+            changeRewardType();
+        });
+
+
+    });
+
+
+  function validateForm()
+  {
+
+
+      if($("#babyId").val() == "--选择--")
+      {
+          alert("请选择宝贝");
+          return false;
+      }
+
+      if($("#typeId").val() == "--选择--" || $("#typeId").val() == "")
+      {
+          alert("选择奖励类型");
+          return false;
+      }
+
+
+
+      if($("#rewardTime").val() == "")
+      {
+          alert("选择奖励日期");
+          return false;
+      }
+
+     return true;
+  }
+
+</script>
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    <div th:replace="layout/adminLayout :: sidebar"></div>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">奖励</strong> / <small>添加奖励</small></div>
+            </div>
+            <hr>
+
+            <div class="am-g am-g-fixed adduser">
+
+
+                <form class="am-form am-form-horizontal" th:action="@{/admin/reward/saveReward}">
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-2 am-form-label">选择宝贝</label>
+                        <div class="am-u-sm-10">
+                            <select class="form-control" id="babyId" name="babyId">
+                                <option>--选择--</option>
+                                <option  th:each="baby:${babyList}" th:value="${baby.id}"  th:text="${baby.name }"></option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="rewardTime" class="am-u-sm-2 am-form-label">奖励日期</label>
+                        <div class="am-u-sm-10">
+                            <input type="text" class="am-form-field" id="rewardTime"   placeholder="请选择日期" data-am-datepicker  readonly required name="rewardTime" />
+
+                        </div>
+                    </div>
+
+
+                    <div class="am-form-group">
+                        <label class="am-u-sm-2 am-form-label">选择奖励类型</label>
+                        <div class="am-u-sm-10">
+                            <select class="form-control" id="typeId" name="typeId">
+                                <option>--选择--</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary" onclick="return validateForm()">提交数据</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+
+        </div>
+        <!-- footer-->
+        <div th:replace="layout/adminLayout :: footer"></div>
+    </div>
+
+
+</div>
+<!-- content end -->
+
+
+</div>
+
+<div th:fragment="scripts(scripts)">
+    <script th:inline="javascript">
+     var  babyId= [[${reward.baby_id}]];
+
+     $(".form-control").find("option[value='" +babyId + "']").attr("selected",true);
+
+
+    // $("#rewardTime").val("2019-01-06");
+    </script>
+</div>
+
+</body>
+</html>

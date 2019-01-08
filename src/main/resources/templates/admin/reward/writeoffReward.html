@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="layout/adminLayout :: htmlhead(title='BabyLog BabyList')"></head>
+<body class="am-with-topbar-fixed-top am-scrollable-vertical">
+
+<div th:replace="layout/adminLayout :: header"></div>
+
+<script>
+
+    function cptScore(obj)
+    {
+        var rewardId = obj.getAttribute("rewardId");
+        var inputScore = obj.value;
+        var rowTatalScore =  $("td[name='ct_" + rewardId + "']")[0].textContent;
+
+        if(!/^\d+$/.test(inputScore)){
+            alert("请输入整数");
+            obj.value = "0";
+            return ;
+        }
+
+        //alert( inputScore+ "|" + rowTatalScore);
+        //alert(parseInt(inputScore) > parseInt(rowTatalScore));
+        if(parseInt(inputScore) > parseInt(rowTatalScore))
+        {
+            alert("请输入总分" +  rowTatalScore + "以内的分数");
+            obj.value = "0";
+            return;
+        }
+
+
+    }
+
+
+    function writeOff(obj)
+    {
+
+        var babyId = obj.getAttribute("babyId");
+        //alert(babyId);
+        var score =  $("INPUT[name='score_" + babyId + "']")[0].value;
+        //alert(score);
+        window.location.href= "/admin/reward/writeoffReward?babyId=" + babyId + "&score="+score;
+    }
+
+</script>
+
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    <div th:replace="layout/adminLayout :: sidebar"></div>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">奖励</strong> / <small>消分列表</small></div>
+            </div>
+            <hr>
+
+            <form  th:action="@{/admin/reward/rewardList}">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-xs">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            </form>
+
+            <div class="am-g">
+                <div class="am-u-sm-12">
+                    <table class="am-table am-table-bd am-table-striped admin-content-table">
+                        <thead>
+                        <tr>
+                            <th>宝贝名称</th>
+                            <th>奖励数</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="rewardCount : ${rewardCountList}">
+                            <td th:text="${rewardCount.name}"></td>
+                            <td  th:name='${"ct_" + rewardCount.id}' th:text="${rewardCount.ct}"></td>
+
+                            <td>
+                                <div class="am-dropdown" data-am-dropdown="">
+                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle"
+                                            data-am-dropdown-toggle=""><span class="am-icon-cog"></span> <span
+                                            class="am-icon-caret-down"></span></button>
+                                    <ul class="am-dropdown-content">
+                                        <li>
+                                            <input type="text"  onblur='cptScore(this)'  th:rewardId="${rewardCount.id}" th:name='${"score_" + rewardCount.id}'  placeholder="0">
+                                            <button  class="am-btn am-btn-danger"   onclick='javascript:writeOff(this)' th:babyId="${rewardCount.id}" >消分</button>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!-- footer-->
+        <div th:replace="layout/adminLayout :: footer"></div>
+    </div>
+
+
+</div>
+<!-- content end -->
+
+
+</div>
+
+
+</body>
+</html>

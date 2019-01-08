@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="layout/adminLayout :: htmlhead(title='BabyLog BabyList')"></head>
+<body class="am-with-topbar-fixed-top am-scrollable-vertical">
+
+<div th:replace="layout/adminLayout :: header"></div>
+
+<script>
+    function jump()
+    {
+        window.location.href= "/admin/reward/addReward";
+    }
+
+
+</script>
+
+<div class="am-cf admin-main">
+    <!-- sidebar start -->
+    <div th:replace="layout/adminLayout :: sidebar"></div>
+    <!-- sidebar end -->
+
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-cf am-padding am-padding-bottom-0">
+                <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">奖励</strong> / <small>奖励列表</small></div>
+            </div>
+            <hr>
+
+            <form  th:action="@{/admin/reward/rewardList}">
+            <div class="am-g">
+                <div class="am-u-sm-12 am-u-md-6">
+                    <div class="am-btn-toolbar">
+                        <div class="am-btn-group am-btn-group-xs">
+                            <button type="button" class="am-btn am-btn-default"  onclick="jump()"    ><span class="am-icon-plus"></span> 新增</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-form-group">
+                        <input  type="date" name="startDate" th:value="${inData.startDate}" min="1970-01-01"  max="2050-12-31" placeholder="开始时间" />
+                    </div>
+                </div>
+
+                <div class="am-u-sm-12 am-u-md-3">
+                    <div class="am-input-group am-input-group-sm">
+                        -
+                        <input  type="date" name="endDate"  th:value="${inData.endDate}" min="1970-01-01"  max="2050-12-31" placeholder="结束时间" />
+                        <span class="am-input-group-btn">
+                             <button class="am-btn am-btn-default" type="submit">搜索</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+            <div class="am-g">
+                <div class="am-u-sm-12">
+                    <table class="am-table am-table-bd am-table-striped admin-content-table">
+                        <thead>
+                        <tr>
+                            <th>宝贝名称</th>
+                            <th>奖励类型</th>
+                            <th>奖励日期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="reward : ${rewardList}">
+                            <td th:text="${reward.baby_name}"></td>
+                            <td th:text="${reward.type_name}"></td>
+                            <td th:text="${reward.reward_time1}"></td>
+
+                            <td>
+                                <div class="am-dropdown" data-am-dropdown="">
+                                    <button class="am-btn am-btn-default am-btn-xs am-dropdown-toggle"
+                                            data-am-dropdown-toggle=""><span class="am-icon-cog"></span> <span
+                                            class="am-icon-caret-down"></span></button>
+                                    <ul class="am-dropdown-content">
+                                        <li><a th:href="@{/admin/reward/editReward/{id}(id=${reward.id})}">1. 编辑</a></li>
+                                        <li><a th:href="@{/admin/reward/delReward/{id}(id=${reward.id})}">2. 删除</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <ul class="am-pagination am-pagination-centered">
+                <th:block th:each="i:${#numbers.sequence(1,totalPage)}">
+                    <!-- 判断是否为当前页，添加am-active-->
+                    <li th:if="${i == pageNum}" th:class="am-active">
+                        <a th:href="@{/admin/reward/rewardList(pageNum=${i},startDate=${inData.startDate},endDate=${inData.endDate})}" th:text="${i}">1</a>
+                    </li>
+                    <!-- 不是当前页普通输出-->
+                    <li th:if="${i != pageNum}">
+                        <a th:href="@{/admin/reward/rewardList(pageNum=${i},startDate=${inData.startDate},endDate=${inData.endDate})}" th:text="${i}">1</a>
+                    </li>
+                </th:block>
+            </ul>
+
+        </div>
+        <!-- footer-->
+        <div th:replace="layout/adminLayout :: footer"></div>
+    </div>
+
+
+</div>
+<!-- content end -->
+
+
+</div>
+
+
+</body>
+</html>
