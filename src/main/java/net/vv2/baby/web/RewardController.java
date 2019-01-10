@@ -58,7 +58,7 @@ public class RewardController {
         List<HashMap<String,Object>> list = rewardService.selectRewardCount(param);
         model.addAttribute("list",list);
         model.addAttribute("inData",param);
-        return "/baby/rewardList";
+        return "baby/rewardList";
     }
 
 

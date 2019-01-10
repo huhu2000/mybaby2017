@@ -27,7 +27,7 @@ public class LoginController {
 
     @RequestMapping("/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
     /**
@@ -54,7 +54,7 @@ public class LoginController {
             mv.addObject("user", user);
             mv.addObject("msg", msg);
             mv.addObject("url", url);
-            mv.setViewName("/success");
+            mv.setViewName("success");
             return mv;
         } else {
             msg = "登陆失败，用户名或密码错误！";
@@ -62,7 +62,7 @@ public class LoginController {
             mv.addObject("msg", msg);
             mv.addObject("url", url);
             System.out.println("登陆失败！");
-            mv.setViewName("/err");
+            mv.setViewName("err");
             return mv;
         }
 
@@ -81,7 +81,7 @@ public class LoginController {
         model.addAttribute("msg",msg);
         model.addAttribute("url",url);
 
-        return "/success";
+        return "success";
 
     }
 }

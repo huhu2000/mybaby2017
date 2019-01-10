@@ -68,14 +68,14 @@ public class BlogController {
         model.addAttribute("baby",baby);
         model.addAttribute("count",count);
         model.addAttribute("list",list);
-        return "/baby/index";
+        return "baby/index";
     }
 
     @RequestMapping("/add")
     public String addFrom(Model model){
     	List<Baby> list = babyService.selectAllBaby();
     	model.addAttribute("list", list);
-        return "/baby/addFrom";
+        return "baby/addFrom";
     }
 
 
@@ -110,14 +110,14 @@ public class BlogController {
             String url = "<meta http-equiv=\"refresh\" content=\"2;url=/baby/add\">";
             mv.addObject("msg", msg);
             mv.addObject("url", url);
-            mv.setViewName("/success");
+            mv.setViewName("success");
             return mv;
         }else {
             String msg = "日记数据添加失败！";
             String url = "<meta http-equiv=\"refresh\" content=\"2;url=/baby/add\">";
             mv.addObject("msg", msg);
             mv.addObject("url", url);
-            mv.setViewName("/err");
+            mv.setViewName("err");
             return mv;
         }
     }
@@ -150,14 +150,14 @@ public class BlogController {
             String url = "<meta http-equiv=\"refresh\" content=\"2;url=/baby/add\">";
             mv.addObject("msg", msg);
             mv.addObject("url", url);
-            mv.setViewName("/success");
+            mv.setViewName("success");
             return mv;
         }else {
             String msg = "身高体重数据添加失败！";
             String url = "<meta http-equiv=\"refresh\" content=\"2;url=/baby/add\">";
             mv.addObject("msg", msg);
             mv.addObject("url", url);
-            mv.setViewName("/err");
+            mv.setViewName("err");
             return mv;
         }
     }
@@ -184,7 +184,7 @@ public class BlogController {
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("key",key);
         model.addAttribute("list",list);
-        return "/baby/blog";
+        return "baby/blog";
     }
 
     /**
@@ -196,7 +196,7 @@ public class BlogController {
     public String firstList(Model model){
         List<Blog> list = blogService.selectAllFirst();
         model.addAttribute("list",list);
-        return "/baby/firstList";
+        return "baby/firstList";
     }
 
 
@@ -212,7 +212,7 @@ public class BlogController {
     public String languageList(Model model){
         List<Blog> list = blogService.selectAllLanguage();
         model.addAttribute("list",list);
-        return "/baby/languageList";
+        return "baby/languageList";
     }
 
     /**
@@ -224,7 +224,7 @@ public class BlogController {
     public String cognitiveList(Model model){
         List<Blog> list = blogService.selectAllCognitive();
         model.addAttribute("list",list);
-        return "/baby/cognitiveList";
+        return "baby/cognitiveList";
     }
 
 
