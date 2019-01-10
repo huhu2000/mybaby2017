@@ -29,29 +29,29 @@ public class Mybaby2017ApplicationTests {
     @Test
     public void selectUserById() {
 
-        System.out.println(userService.selectUserById(1));
+       // System.out.println(userService.selectUserById(1));
     }
 
     @Test
     public void selectBabyById() {
 
-        System.out.println(babyService.selectBabyById(1));
+     //   System.out.println(babyService.selectBabyById(1));
 
     }
 
     @Test
     public void selectUserByNameAndPassword(){
-        User user = new User();
+      /*  User user = new User();
         user.setName("hua");
         user.setPassword(SecureUtil.md5("888" +
                 ""));
         System.out.println(userService.selectUserByNameAndPassword(user.getName(),user.getPassword()).toString());
-
+*/
     }
 
     @Test
     public void selectAllBaby(){
-        System.out.println(babyService.selectAllBaby());
+       // System.out.println(babyService.selectAllBaby());
 
     }
 

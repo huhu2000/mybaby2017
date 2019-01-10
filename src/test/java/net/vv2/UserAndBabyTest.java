@@ -31,22 +31,22 @@ public class UserAndBabyTest {
 
     @Test
     public void addUser(){
-        User user = new User("test", SecureUtil.md5("test"),1,"测试");
+      /*  User user = new User("test", SecureUtil.md5("test"),1,"测试");
         if (userService.addUser(user)>0){
             System.out.println("添加数据成功！");
         }else {
             System.out.println("添加数据失败！");
-        }
+        }*/
     }
 
     @Test
     public void updUser(){
-        User user = userService.selectUserById(3);
+    /*    User user = userService.selectUserById(3);
         user.setName("haha11");
         user.setGm(2);
         user.setAmilymembers("papa11");
         userService.updUser(user);
-        userService.delUser(3);
+        userService.delUser(3);*/
     }
 
 
@@ -59,7 +59,7 @@ public class UserAndBabyTest {
 //        baby.setName("kakakak");
 //        babyService.updBaby(baby);
 
-        babyService.delBaby(10);
+        //babyService.delBaby(10);
     }
 
 }

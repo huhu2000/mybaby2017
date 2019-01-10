@@ -69,26 +69,29 @@ public class BlogTest {
     public void updBlog(){
 
 
-        Blog blog = blogService.selectBlogById(708);
+       /* Blog blog = blogService.selectBlogById(708);
         blog.setBlog("baby2017 修改更新记录测试！");
-        blog.setUpdate_time(new Date());
+        blog.setUpdate_time(new Date());*/
 
-        System.out.println(blogService.updBlog(blog));
+       // System.out.println(blogService.updBlog(blog));
     }
 
     @Test
     public void delBlog(){
-        System.out.println(blogService.delBlog(708));
+
+        //System.out.println(blogService.delBlog(708));
     }
 
     @Test
     public void selectAll(){
-        System.out.println(blogService.selectAllBlog());
+
+        //System.out.println(blogService.selectAllBlog());
     }
 
     @Test
     public void selectCount(){
-        System.out.println(blogService.selectCount());
+
+        //System.out.println(blogService.selectCount());
     }
 
     @Test
