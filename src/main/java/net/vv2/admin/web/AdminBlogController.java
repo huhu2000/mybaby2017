@@ -54,7 +54,7 @@ public class AdminBlogController {
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("key",key);
         model.addAttribute("list",list);
-        return "/admin/blog/blogList";
+        return "admin/blog/blogList";
     }
 
 
@@ -70,7 +70,7 @@ public class AdminBlogController {
         Blog blog = blogService.selectBlogById(id);
         System.out.println(blog);
         model.addAttribute("blog",blog);
-        return "/admin/blog/editBlog";
+        return "admin/blog/editBlog";
     }
 
     /**

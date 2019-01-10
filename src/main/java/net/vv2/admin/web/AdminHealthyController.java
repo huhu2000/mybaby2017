@@ -36,7 +36,7 @@ public class AdminHealthyController {
     public String healthyList(Model model){
         List<Healthy> list = healthyService.selectAll();
         model.addAttribute("list",list);
-        return "/admin/healthy/healthyList";
+        return "admin/healthy/healthyList";
     }
 
     /**
@@ -50,7 +50,7 @@ public class AdminHealthyController {
                               Model model){
         Healthy healthy = healthyService.selectHealthyById(id);
         model.addAttribute("healthy",healthy);
-        return "/admin/healthy/editHealthy";
+        return "admin/healthy/editHealthy";
     }
 
 

@@ -38,7 +38,7 @@ public class AdminUserController {
 
         model.addAttribute("users", users);
 
-        return "/admin/user/userList";
+        return "admin/user/userList";
     }
 
     /**
@@ -49,7 +49,7 @@ public class AdminUserController {
     @RequestMapping("/addUser")
     public String userAdd() {
 
-        return "/admin/user/addUser";
+        return "admin/user/addUser";
     }
 
     /**
@@ -103,7 +103,7 @@ public class AdminUserController {
                            Model model) {
         User user = userService.selectUserById(id);
         model.addAttribute("user", user);
-        return "/admin/user/editUser";
+        return "admin/user/editUser";
     }
 
 
@@ -172,9 +172,9 @@ public class AdminUserController {
      */
     public ModelAndView returnMv(boolean bl, ModelAndView mv) {
         if (bl) {
-            return updateDate(mv, "操作成功！", "<meta http-equiv=\"refresh\" content=\"2;url=/admin/user/userList\">", "/success");
+            return updateDate(mv, "操作成功！", "<meta http-equiv=\"refresh\" content=\"2;url=/admin/user/userList\">", "success");
         } else {
-            return updateDate(mv, "操作失败！", "<meta http-equiv=\"refresh\" content=\"2;url=/admin/user/userList\">", "/err");
+            return updateDate(mv, "操作失败！", "<meta http-equiv=\"refresh\" content=\"2;url=/admin/user/userList\">", "err");
         }
 
     }

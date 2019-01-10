@@ -78,7 +78,7 @@ public class AdminRewardController {
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("inData",param);
 
-        return "/admin/reward/rewardList";
+        return "admin/reward/rewardList";
 
     }
 
@@ -91,7 +91,7 @@ public class AdminRewardController {
         Map<String,Object> param = new HashMap<>();
         List<HashMap<String,Object>> list = rewardService.selectRewardCountByUser(param);
         model.addAttribute("rewardCountList",list);
-        return "/admin/reward/writeoffReward";
+        return "admin/reward/writeoffReward";
 
     }
 
@@ -115,7 +115,7 @@ public class AdminRewardController {
             }
         }
 
-        return returnMv(true,mv,"/admin/reward/writeoffRewardView");
+        return returnMv(true,mv,"admin/reward/writeoffRewardView");
 
     }
 
@@ -130,7 +130,7 @@ public class AdminRewardController {
      /*   List<HashMap<String,Object>>  rewardTypeList = rewardService.selectRewardTypeList();
         model.addAttribute("rewardTypeList",rewardTypeList);*/
 
-        return "/admin/reward/addReward";
+        return "admin/reward/addReward";
     }
 
 
@@ -150,7 +150,7 @@ public class AdminRewardController {
         model.addAttribute("babyList",babyList);
 
         model.addAttribute("reward",rewardParam);
-        return "/admin/reward/addReward";
+        return "admin/reward/addReward";
     }
 
 
@@ -158,7 +158,7 @@ public class AdminRewardController {
     public ModelAndView delReward(@PathVariable Integer id,
                                 ModelAndView mv){
 
-        return returnMv((rewardService.delReward(id)>0),mv,"/admin/reward/rewardList");
+        return returnMv((rewardService.delReward(id)>0),mv,"admin/reward/rewardList");
 
     }
 
@@ -171,9 +171,9 @@ public class AdminRewardController {
      */
     public ModelAndView returnMv(boolean bl, ModelAndView mv,String url) {
         if (bl) {
-            return updateDate(mv, "操作成功！", "<meta http-equiv=\"refresh\" content=\"2;url=" + url + "\">", "/success");
+            return updateDate(mv, "操作成功！", "<meta http-equiv=\"refresh\" content=\"2;url=" + url + "\">", "success");
         } else {
-            return updateDate(mv, "操作失败！", "<meta http-equiv=\"refresh\" content=\"2;url=" +  url + "\">", "/err");
+            return updateDate(mv, "操作失败！", "<meta http-equiv=\"refresh\" content=\"2;url=" +  url + "\">", "err");
         }
 
     }

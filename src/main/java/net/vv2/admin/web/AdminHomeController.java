@@ -15,6 +15,6 @@ public class AdminHomeController {
 
     @RequestMapping("/home")
     public String index(){
-        return "/admin/index";
+        return "admin/index";
     }
 }

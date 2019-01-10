@@ -33,7 +33,7 @@ public class AdminBabyController {
     public String babyList(Model model){
         List<Baby> list = babyService.selectAllBaby();
         model.addAttribute("list",list);
-        return "/admin/baby/babyList";
+        return "admin/baby/babyList";
     }
 
     /**
@@ -42,7 +42,7 @@ public class AdminBabyController {
      */
     @RequestMapping("/addBaby")
     public String addBaby(){
-        return "/admin/baby/addBaby";
+        return "admin/baby/addBaby";
     }
 
     /**
@@ -72,7 +72,7 @@ public class AdminBabyController {
                            Model model){
         Baby baby = babyService.selectBabyById(id);
         model.addAttribute("baby",baby);
-        return "/admin/baby/editBaby";
+        return "admin/baby/editBaby";
 
     }
 
