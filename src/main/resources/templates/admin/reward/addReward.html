@@ -181,12 +181,10 @@
 
 <div th:fragment="scripts(scripts)">
     <script th:inline="javascript">
-     var  babyId= [[${reward.baby_id}]];
-
-     $(".form-control").find("option[value='" +babyId + "']").attr("selected",true);
-
-
-    // $("#rewardTime").val("2019-01-06");
+     var  babyId= [[${reward?.baby_id}]];
+     if(babyId != "" && babyId != "null") {
+         $(".form-control").find("option[value='" + babyId + "']").attr("selected", true);
+     }
     </script>
 </div>
 
