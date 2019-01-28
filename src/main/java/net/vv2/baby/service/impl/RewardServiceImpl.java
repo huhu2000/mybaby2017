@@ -23,6 +23,8 @@ public class RewardServiceImpl implements RewardService {
     @Autowired
     private RewardMapper rewardMapper;
 
+
+
     @Override
     public int addReward(Map<String,Object> reward) {
         return rewardMapper.addReward(reward);
@@ -33,8 +35,13 @@ public class RewardServiceImpl implements RewardService {
         return rewardMapper.selectAllRewardCount();
     }
 
+
+
+
     @Override
     public List<HashMap<String,Object>> selectRewardCountByUser(Map<String,Object> param) {
+
+
         return rewardMapper.selectRewardCountByUser(param);
     }
 
@@ -45,10 +52,20 @@ public class RewardServiceImpl implements RewardService {
     }
 
 
+
+
     @Override
     public List<HashMap<String,Object>> selectRewardCount(Map<String,Object> param) {
         return rewardMapper.selectRewardCount(param);
     }
+
+
+
+    @Override
+    public List<HashMap<String,Object>>  selectRewardCountByType(Map<String,Object> param) {
+        return rewardMapper.selectRewardCountByType(param);
+    }
+
 
 
     @Override

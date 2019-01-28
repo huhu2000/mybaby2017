@@ -3,6 +3,9 @@
 <head th:replace="layout/layout :: htmlhead(title='宝贝的第一次')"></head>
 <body class="am-with-topbar-fixed-top am-scrollable-vertical">
 
+<script th:src="@{/highcharts/highcharts.js}"></script>
+<script th:src="@{/highcharts/modules/exporting.js}"></script>
+<script th:src="@{/highcharts/modules/export-data.js}"></script>
 <div th:replace="layout/layout :: header"></div>
 
 
@@ -33,42 +36,77 @@
         <div class="am-panel-hd">奖励>></div>
         <div class="am-panel-bd">
 
-            <!--  am-icon-female 妈妈图标   am-icon-thumbs-o-up  am-icon-bicycle-->
 
-            <ul class="am-list am-list-static am-list-border am-list-striped am-animation-fade" th:each="reward:${list}">
-                <li><i class="am-icon-male am-icon-fw"></i>
-                    <span th:text="${reward.month}"></span> 月&nbsp;&nbsp;<span th:text="${reward.name}"></span>&nbsp;小朋友，获得
+                    <ul class="am-list am-list-static am-list-border am-list-striped am-animation-fade" th:each="reward:${list}">
+                        <li>
+                            <div class="am-container">
+                                <i class="am-icon-male am-icon-fw"></i>
+                                <span th:text="${reward.name}"></span>&nbsp;小朋友，获得
+                                <img width="25" height="20" th:src="@{/image/flower.gif}" />
+                                X <span  style="color:red;" th:text="${reward.ct}"></span>
+                            </div>
+                            <div class="am-g am-g-fixed">
+                                <div class="am-u-sm-6">
+                                <ul >
+                                    <li th:each="rewardCount:${reward.typeCountList}">
+                                        <span th:text="${rewardCount.type_name}" />
+                                        <img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${rewardCount.type_count}" />
+                                    </li>
+                                </ul>
+                                </div>
+                                <div class="am-u-sm-6">
+                                    <div th:id="${'container' + reward?.name}" style="min-width: 210px; height: 300px; max-width: 500px; margin: 0 auto"></div>
+                                    <div th:fragment="scripts(scripts)">
+                                        <script th:inline="javascript">
 
+                                            var  typeCountListJson=  eval('(' + [[${reward?.typeCountListJson}]]   + ')');
+                                            var  babyName =  [[${reward?.name}]];
+                                            var  containerName = "container" + babyName;
 
-                       <img width="25" height="20" th:src="@{/image/flower.gif}" />
+                                        </script>
+                                </div>
 
-                       X <span  style="color:red;" th:text="${reward.ct}"></span>
-                         <ul >
-                             <li>
-                                 睡觉奖励：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct0}">
-                             </li>
-                             <li>
-                                 吃饭：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct1}">
-                             </li>
-                             <li>
-                                 学习：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct2}">
-                             </li>
-                             <li>
-                                 起床：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct3}">
-                             </li>
-                             <li>
-                                 友爱：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct4}">
-                             </li>
-                             <li>
-                                 懂礼貌：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct5}">
-                             </li>
-                             <li>
-                                 不哭闹：<img width="25" height="20" th:src="@{/image/flower.gif}" />X<span  style="color:red;" th:text="${reward.ct6}">
-                             </li>
-                     </ul>
-                </li>
+                                    <script type="text/javascript">
+                                        //alert(babyName);
+                                        Highcharts.chart(containerName, {
+                                            chart: {
+                                                plotBackgroundColor: null,
+                                                plotBorderWidth: null,
+                                                plotShadow: false,
+                                                type: 'pie'
+                                            },
+                                            title: {
+                                                text: babyName
+                                            },
+                                            tooltip: {
+                                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                            },
+                                            plotOptions: {
+                                                pie: {
+                                                    allowPointSelect: true,
+                                                    cursor: 'pointer',
+                                                    dataLabels: {
+                                                        enabled: true,
+                                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                                        style: {
+                                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            series: [{
+                                                name: babyName,
+                                                colorByPoint: true,
+                                                data: typeCountListJson
+                                            }]
+                                        });
+                                    </script>
+                                </div>
+                            </div>
 
-            </ul>
+                        </li>
+
+                    </ul>
 
         </div>
 

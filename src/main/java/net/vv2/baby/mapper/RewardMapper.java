@@ -74,20 +74,26 @@ public interface RewardMapper {
     @Delete("delete from bb_reward where id = #{id}")
     int delReward(Integer id);
 
+
+
+      /*  "select a.name, count(*) ct ," +
+                " count(case type when '0' then a.id  end) ct0,\n" +
+                " count(case type when '1' then a.id  end) ct1, " +
+                " count(case type when '2' then a.id  end) ct2, " +
+                " count(case type when '3' then a.id  end) ct3, " +
+                " count(case type when '4' then a.id  end) ct4, " +
+                " count(case type when '5' then a.id  end) ct5, " +
+                " count(case type when '6' then a.id  end) ct6 " +
+                " from bb_reward b, bb_baby a\n" +
+                " where a.id = b.baby_id\n " +
+                " and b.write_off = '0' " +*/
     /**
      * 返回reward统计数据数据
      *
      * @return
      */
     @Select("<script>" +
-            "select month ,a.name, count(*) ct ," +
-            " count(case type when '0' then a.id  end) ct0,\n" +
-            " count(case type when '1' then a.id  end) ct1, " +
-            " count(case type when '2' then a.id  end) ct2, " +
-            " count(case type when '3' then a.id  end) ct3, " +
-            " count(case type when '4' then a.id  end) ct4, " +
-            " count(case type when '5' then a.id  end) ct5, " +
-            " count(case type when '6' then a.id  end) ct6 " +
+            "select a.id, a.name, count(*) ct " +
             " from bb_reward b, bb_baby a\n" +
             " where a.id = b.baby_id\n " +
             " and b.write_off = '0' " +
@@ -97,9 +103,26 @@ public interface RewardMapper {
             "<if test='endDate!=null and endDate!=\"\"'>" +
             "  <![CDATA[ and str_to_date(b.reward_time,'%Y%m%d') <= str_to_date(#{endDate}, '%Y-%m-%d') ]]>" +
             "</if>"+
-            " group by a.name, month" +
+            " group by a.id,a.name" +
             "</script>")
     List<HashMap<String, Object>> selectRewardCount(Map<String,Object> param);
+
+    @Select("<script>" +
+            "select b.type_id , b.type_name , count(*) type_count" +
+            " from bb_reward a, bb_reward_type b\n" +
+            " where a.type = b.type_id\n " +
+            " and a.baby_id = b.baby_id " +
+            " and a.baby_id = #{babyId} " +
+            "<if test='startDate!=null and startDate!=\"\"'>" +
+            " <![CDATA[ and str_to_date(a.reward_time,'%Y%m%d') >= str_to_date(#{startDate}, '%Y-%m-%d') ]]>" +
+            "</if>"+
+            "<if test='endDate!=null and endDate!=\"\"'>" +
+            "  <![CDATA[ and str_to_date(a.reward_time,'%Y%m%d') <= str_to_date(#{endDate}, '%Y-%m-%d') ]]>" +
+            "</if>" +
+            " and write_off = '0' " +
+            " group by b.type_id,b.type_name" +
+            "</script>")
+    List<HashMap<String, Object>> selectRewardCountByType(Map<String,Object> param);
 
 
 
@@ -115,7 +138,8 @@ public interface RewardMapper {
 
 
     @Select("<script>" +
-            "select *  from bb_reward_type  t where 1=1 " +
+            "select *  from bb_reward_type  t where " +
+            " t.baby_id = #{baby_id} " +
             "<if test='reward_time!=null and reward_time!=\"\" and  baby_id!=null and baby_id!=\"\" '>" +
             "  <![CDATA[ and not EXISTS\n" +
             "    (select 1 from  bb_reward b\n" +

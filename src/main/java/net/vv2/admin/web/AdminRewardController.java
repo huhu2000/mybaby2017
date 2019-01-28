@@ -115,7 +115,7 @@ public class AdminRewardController {
             }
         }
 
-        return returnMv(true,mv,"admin/reward/writeoffRewardView");
+        return returnMv(true,mv,"/admin/reward/writeoffRewardView");
 
     }
 
@@ -158,7 +158,7 @@ public class AdminRewardController {
     public ModelAndView delReward(@PathVariable Integer id,
                                 ModelAndView mv){
 
-        return returnMv((rewardService.delReward(id)>0),mv,"admin/reward/rewardList");
+        return returnMv((rewardService.delReward(id)>0),mv,"/admin/reward/rewardList");
 
     }
 

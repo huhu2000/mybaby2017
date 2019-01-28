@@ -16,6 +16,8 @@ public interface RewardService {
 
     List<HashMap<String,Object>>  selectRewardCount(Map<String,Object> param);
 
+    List<HashMap<String, Object>> selectRewardCountByType(Map<String,Object> param);
+
     List<HashMap<String,Object>> selectRewardCountByUser(Map<String,Object> param);
 
     List<HashMap<String,Object>> selectRewardTypeList(Map<String,Object> param);

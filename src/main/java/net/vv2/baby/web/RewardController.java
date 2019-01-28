@@ -1,6 +1,8 @@
 package net.vv2.baby.web;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xiaoleilu.hutool.date.DateUtil;
 import net.vv2.baby.domain.Baby;
 import net.vv2.baby.service.RewardService;
@@ -56,6 +58,32 @@ public class RewardController {
         param.put("endDate",endDate);
 
         List<HashMap<String,Object>> list = rewardService.selectRewardCount(param);
+        if(list != null  && list.size() >0) {
+            for (HashMap<String, Object> item : list) {
+                Map<String, Object> paramType = new HashMap<>();
+                paramType.put("startDate", startDate);
+                paramType.put("endDate", endDate);
+                paramType.put("babyId", item.get("id"));
+
+                List<HashMap<String, Object>> typeList = rewardService.selectRewardCountByType(paramType);
+                item.put("typeCountList", typeList);
+
+                //组织char数据
+                if (typeList != null && typeList.size() > 0) {
+                    JSONArray jsonArray = new JSONArray();
+                    for (HashMap<String, Object> map : typeList) {
+                        JSONObject jsonObject = new JSONObject();
+
+                        jsonObject.put("name", map.get("type_name"));
+                        jsonObject.put("y", map.get("type_count"));
+
+                        jsonArray.add(jsonObject);
+                    }
+                    item.put("typeCountListJson", jsonArray.toJSONString());
+                }
+            }
+        }
+
         model.addAttribute("list",list);
         model.addAttribute("inData",param);
         return "baby/rewardList";
