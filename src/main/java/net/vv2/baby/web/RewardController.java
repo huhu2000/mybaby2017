@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -45,7 +44,13 @@ public class RewardController {
 
         if(StringUtils.isEmpty(startDate))
         {
-            startDate = DateUtil.beginOfMonth(DateUtil.date()).toString("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            c.setTime(DateUtil.date());
+            c.add(Calendar.YEAR, -1);
+            Date y = c.getTime();
+            startDate  = format.format(y);
+            //startDate = DateUtil.beginOfMonth(DateUtil.date()).toString("yyyy-MM-dd");
         }
 
         if(StringUtils.isEmpty(endDate))

@@ -140,6 +140,7 @@ public interface RewardMapper {
     @Select("<script>" +
             "select *  from bb_reward_type  t where " +
             " t.baby_id = #{baby_id} " +
+            " and t.is_publish = '1' " +
             "<if test='reward_time!=null and reward_time!=\"\" and  baby_id!=null and baby_id!=\"\" '>" +
             "  <![CDATA[ and not EXISTS\n" +
             "    (select 1 from  bb_reward b\n" +
