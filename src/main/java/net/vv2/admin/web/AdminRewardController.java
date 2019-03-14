@@ -66,15 +66,23 @@ public class AdminRewardController {
             endDate =  DateUtil.format(DateUtil.date(),"yyyy-MM-dd");
         }
 
-        PageHelp pageHelp = new PageHelp(rewardService.selectAllRewardCount(),pageNum,rows);
+        PageHelp pageHelp = new PageHelp(rewardService.selectAllRewardCount(startDate,endDate),pageNum,rows);
 
         Map<String,Object> param = new HashMap<>();
         param.put("startDate",startDate);
         param.put("endDate",endDate);
 
         List<HashMap<String,Object>> list = rewardService.selectAllReward(startDate,endDate,(pageNum-1)*rows,rows);
+
+        long totalPage = 1;
+        if(pageHelp != null && pageHelp.getPageArray() != null && pageHelp.getPageArray().length >0)
+        {
+            totalPage = pageHelp.getPageArray()[0];
+        }
+
+
         model.addAttribute("rewardList",list);
-        model.addAttribute("totalPage",pageHelp.getPageArray()[0]);
+        model.addAttribute("totalPage",totalPage);
         model.addAttribute("pageNum",pageNum);
         model.addAttribute("inData",param);
 

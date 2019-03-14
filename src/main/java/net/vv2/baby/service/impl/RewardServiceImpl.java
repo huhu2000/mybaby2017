@@ -31,8 +31,8 @@ public class RewardServiceImpl implements RewardService {
     }
 
     @Override
-    public int selectAllRewardCount() {
-        return rewardMapper.selectAllRewardCount();
+    public int selectAllRewardCount(String startDate, String endDate) {
+        return rewardMapper.selectAllRewardCount( startDate,  endDate);
     }
 
 

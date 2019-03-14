@@ -18,11 +18,19 @@ public interface RewardMapper {
 
 
 
-    @Select(" select count(*)  from bb_reward a, bb_baby b , bb_reward_type c" +
+    @Select("<script>" +" select count(*)  from bb_reward a, bb_baby b , bb_reward_type c" +
             " where b.id = a.baby_id" +
             " and a.type = c.type_id " +
-            " ORDER BY create_time DESC  " )
-    int selectAllRewardCount();
+            " and a.write_off = '0' " +
+            "<if test='startDate!=null and startDate!=\"\"'>" +
+            " <![CDATA[ and str_to_date(a.reward_time,'%Y%m%d') >= str_to_date(#{startDate}, '%Y-%m-%d') ]]>" +
+            "</if>"+
+            "<if test='endDate!=null and endDate!=\"\"'>" +
+            "  <![CDATA[ and str_to_date(a.reward_time,'%Y%m%d') <= str_to_date(#{endDate}, '%Y-%m-%d') ]]>" +
+            "</if>"+
+            " ORDER BY create_time DESC  " +
+            "</script>")
+    int selectAllRewardCount(@Param("startDate") String endDate, @Param("endDate") String startDate);
 
     @Select("<script>" +
             "select a.* , b.name baby_name, c.type_name,STR_TO_DATE(a.reward_time,'%Y%m%d')  reward_time1  " +

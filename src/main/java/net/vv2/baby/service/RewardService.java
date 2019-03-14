@@ -10,7 +10,7 @@ public interface RewardService {
 
     int addReward(Map<String,Object> reward);
 
-    int selectAllRewardCount();
+    int selectAllRewardCount(String startDate, String endDate);
 
     List<HashMap<String,Object>> selectAllReward(String startDate, String endDate,Integer offset, Integer rows);
 
