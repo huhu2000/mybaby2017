@@ -7,9 +7,24 @@
 
 
 <script>
+    $(document).ready(function() {
+
+
+           $("#babyId").change(function () {
+
+               changeRewardType();
+           });
+
+           $("#rewardTime").change(function () {
+               changeRewardType();
+           });
+
+    });
+
 
     function changeRewardType()
     {
+       // alert("changeRewardType");
         //初始化
         $("#typeId").empty();
         $("#typeId").append("<option value=''>--选择--</option>");
@@ -85,18 +100,7 @@
      return true;
   }
 
-    $(document).ready(function() {
 
-        $("#babyId").change(function () {
-
-            changeRewardType();
-        });
-
-        $("#rewardTime").change(function () {
-            changeRewardType();
-        });
-
-    });
 </script>
 
 <div class="am-cf admin-main">
@@ -121,7 +125,7 @@
                     <div class="am-form-group">
                         <label class="am-u-sm-2 am-form-label">选择宝贝</label>
                         <div class="am-u-sm-10">
-                            <select class="form-control" id="babyId" name="babyId">
+                            <select class="form-control" id="babyId" name="babyId" >
                                 <option>--选择--</option>
                                 <option  th:each="baby:${babyList}" th:value="${baby.id}"  th:text="${baby.name }"></option>
                             </select>
@@ -132,7 +136,7 @@
                     <div class="am-form-group">
                         <label for="rewardTime" class="am-u-sm-2 am-form-label">奖励日期</label>
                         <div class="am-u-sm-10">
-                            <input type="text" class="am-form-field" id="rewardTime"   placeholder="请选择日期" data-am-datepicker  readonly required name="rewardTime" />
+                            <input type="text" class="am-form-field" id="rewardTime"    placeholder="请选择日期" data-am-datepicker  readonly required name="rewardTime" />
 
                         </div>
                     </div>
