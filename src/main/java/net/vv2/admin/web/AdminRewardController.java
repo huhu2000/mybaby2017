@@ -141,24 +141,28 @@ public class AdminRewardController {
         return "admin/reward/addReward";
     }
 
-
-    @RequestMapping("/saveReward")
-    public String saveReward(String babyId,
-                                   String typeId,
-                                   String rewardTime,
-                                   Model model){
+    @ResponseBody
+    @RequestMapping(value="/saveReward" , method=RequestMethod.POST)
+    public HashMap<String,Object> saveReward( @RequestBody Map param){
         HashMap<String,Object> rewardParam = new HashMap<String,Object> ();
-        rewardParam.put("baby_id",babyId);
-        rewardParam.put("type",typeId);
-        rewardParam.put("reward_time",DateUtil.format(DateUtil.parse(rewardTime), "yyyyMMdd"));
+        rewardParam.put("baby_id",param.get("babyId"));
+        rewardParam.put("type",param.get("typeId"));
+        rewardParam.put("reward_time",DateUtil.format(DateUtil.parse((String)param.get("rewardTime")), "yyyyMMdd"));
         rewardService.addReward(rewardParam);
 
+
+        HashMap<String,Object> result = new HashMap<String,Object>();
+        result.put("resutCode","0000");
+        result.put("resutInfo","熙增奖励成功");
+
+        return result;
         //return returnMv((rewardService.addReward(rewardParam)>0),mv,"/admin/reward/addReward");
-        List<Baby> babyList = babyService.selectAllBaby();
+    /*    List<Baby> babyList = babyService.selectAllBaby();
         model.addAttribute("babyList",babyList);
 
         model.addAttribute("reward",rewardParam);
-        return "admin/reward/addReward";
+        return "admin/reward/addReward";*/
+
     }
 
 

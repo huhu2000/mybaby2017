@@ -75,6 +75,61 @@
         }
     }
 
+    /**
+     * 提交数据
+     */
+    function submitData()
+    {
+        if(!validateForm())
+        {
+            return;
+        }
+
+        var json = {
+            "babyId": $("#babyId").val(),
+            "typeId": $("#typeId").val(),
+            "rewardTime": $("#rewardTime").val()
+        };
+
+        $.ajax({
+            url: '/admin/reward/saveReward',
+            contentType: "application/json;charset=UTF-8",
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(json),
+            timeout: 3000,
+            cache: false,
+            beforeSend: LoadFunction, //加载执行方法
+            error: erryFunction,  //错误执行方法
+            success: succFunction //成功执行方法
+        });
+
+        function LoadFunction() {
+
+        }
+        function erryFunction() {
+            alert("error");
+        }
+        function succFunction(tt) {
+
+            //刷新数据
+            changeRewardType();
+
+            alert(tt.resutInfo);
+          /*  var json = eval(tt); //数组
+
+            $.each(json, function (index) {
+                //循环获取数据
+                var typeId = json[index].type_id;
+                var typeName = json[index].type_name;
+
+                $("#typeId").append("<option value='" + typeId + "'>" + typeName + "</option>");
+            });*/
+        }
+    }
+
+
+
   function validateForm()
   {
 
@@ -159,7 +214,7 @@
 
                     <div class="am-form-group">
                         <div class="am-u-sm-9 am-u-sm-push-3">
-                            <button type="submit" class="am-btn am-btn-primary" onclick="return validateForm()">提交数据</button>
+                            <input type="button" onclick="submitData()" class="am-btn am-btn-secondary btn-loading-example" value="提交数据" data-am-loading="{loadingText: '努力加载中...'}" />
                         </div>
                     </div>
                 </form>
