@@ -7,6 +7,19 @@
 
 <script>
 
+    function cptSpecScore(obj)
+    {
+        var rewardId = obj.getAttribute("rewardId");
+        var inputScore = obj.value;
+
+        if(!/^\d+$/.test(inputScore)){
+            alert("请输入整数");
+            obj.value = "0";
+            return ;
+        }
+
+    }
+
     function cptScore(obj)
     {
         var rewardId = obj.getAttribute("rewardId");
@@ -31,7 +44,10 @@
 
     }
 
-
+    /**
+     * 兑换操作
+     * @param obj
+     */
     function writeOff(obj)
     {
 
@@ -40,6 +56,20 @@
         var score =  $("INPUT[name='score_" + babyId + "']")[0].value;
         //alert(score);
         window.location.href= "/admin/reward/writeoffReward?babyId=" + babyId + "&score="+score;
+    }
+
+    /**
+     * 特殊奖励
+     * @param obj
+     */
+    function specialReward(obj)
+    {
+
+        var babyId = obj.getAttribute("babyId");
+        //alert(babyId);
+        var score =  $("INPUT[name='spec_score_" + babyId + "']")[0].value;
+        //alert(score);
+        window.location.href= "/admin/reward/specialReward?babyId=" + babyId + "&score="+score;
     }
 
 </script>
@@ -93,9 +123,12 @@
                                     <ul class="am-dropdown-content">
                                         <li>
                                             <input type="text"  onblur='cptScore(this)'  th:rewardId="${rewardCount.id}" th:name='${"score_" + rewardCount.id}'  placeholder="0">
-                                            <button  class="am-btn am-btn-danger"   onclick='javascript:writeOff(this)' th:babyId="${rewardCount.id}" >兑换</button>
+                                            <button  class="am-btn am-btn-secondary"   onclick='javascript:writeOff(this)' th:babyId="${rewardCount.id}" >兑换</button>
                                         </li>
-
+                                        <li>
+                                            <input type="text"  onblur='cptSpecScore(this)'  th:rewardId="${rewardCount.id}" th:name='${"spec_score_" + rewardCount.id}'  placeholder="0">
+                                            <button  class="am-btn am-btn-success"   onclick='javascript:specialReward(this)' th:babyId="${rewardCount.id}" >特殊奖励</button>
+                                        </li>
                                     </ul>
                                 </div>
                             </td>

@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -91,7 +88,11 @@ public class AdminRewardController {
     }
 
 
-
+    /**
+     * 兑换限时界面
+     * @param model
+     * @return
+     */
     @RequestMapping("/writeoffRewardView")
     public String writeoffRewardView(
             Model model){
@@ -103,6 +104,13 @@ public class AdminRewardController {
 
     }
 
+    /**
+     * 兑换操作
+     * @param score
+     * @param babyId
+     * @param mv
+     * @return
+     */
     @RequestMapping("/writeoffReward")
     public ModelAndView writeoffReward(
             @RequestParam(defaultValue = "0") String score,
@@ -124,6 +132,47 @@ public class AdminRewardController {
         }
 
         return returnMv(true,mv,"/admin/reward/writeoffRewardView");
+
+    }
+
+
+    /**
+     * 特殊奖励
+     * @param score
+     * @param babyId
+     * @param mv
+     * @return
+     */
+    @RequestMapping("/specialReward")
+    public ModelAndView specialReward(
+            @RequestParam(defaultValue = "0") String score,
+            @RequestParam(defaultValue = "") String babyId,
+            ModelAndView mv){
+
+      int scoreNum  = Integer.parseInt(score);
+      String type = "";
+      if("1".equals(babyId))
+      {
+          type = "12";
+      }
+      else if("2".equals(babyId))
+      {
+          type = "211";
+      }
+
+      if(scoreNum > 0)
+      {
+          for(int i =0 ; i<scoreNum; i++)
+          {
+              Map<String,Object> param = new HashMap<>();
+              param.put("baby_id",babyId);
+              param.put("type",type);
+              param.put("reward_time",DateUtil.format(new Date(), "yyyyMMdd"));
+              rewardService.addReward(param);
+          }
+      }
+
+      return returnMv(true,mv,"/admin/reward/writeoffRewardView");
 
     }
 
@@ -153,7 +202,7 @@ public class AdminRewardController {
 
         HashMap<String,Object> result = new HashMap<String,Object>();
         result.put("resutCode","0000");
-        result.put("resutInfo","熙增奖励成功");
+        result.put("resutInfo","新增奖励成功");
 
         return result;
         //return returnMv((rewardService.addReward(rewardParam)>0),mv,"/admin/reward/addReward");
