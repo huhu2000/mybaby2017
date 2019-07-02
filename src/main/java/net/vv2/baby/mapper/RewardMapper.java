@@ -149,9 +149,14 @@ public interface RewardMapper {
             "select *  from bb_reward_type  t where " +
             " t.baby_id = #{baby_id} " +
             " and t.is_publish = '1' " +
-            "<if test='endDate!=null and endDate!=\"\"'>" +
-            "  <![CDATA[ and str_to_date(a.reward_time,'%Y%m%d') <= str_to_date(#{endDate}, '%Y-%m-%d') ]]>" +
-            "</if>" +
+            "<if test='reward_time!=null and reward_time!=\"\" and  baby_id!=null and baby_id!=\"\" '>" +
+            "  <![CDATA[ and not EXISTS\n" +
+            "    (select 1 from  bb_reward b\n" +
+            "    where t.type_id = b.type\n" +
+            "    and b.reward_time = #{reward_time} \n" +
+            "    and b.baby_id = #{baby_id}\n" +
+            ") ]]>" +
+            "</if>"+
             "</script>")
     List<HashMap<String, Object>> selectRewardTypeList(Map<String,Object> param);
 
